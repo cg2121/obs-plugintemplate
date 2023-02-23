@@ -359,6 +359,7 @@ jobs:
     steps:
       - name: Get Metadata
         id: metadata
+        workingDirectory: ${{ github.workspace }}/plugin
         run: |
           ## METADATA SCRIPT
           echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
