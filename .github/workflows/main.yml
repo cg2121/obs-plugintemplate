@@ -384,7 +384,7 @@ jobs:
           draft: false
           prerelease: ${{ contains(steps.metadata.outputs.version, 'rc') || contains(steps.metadata.outputs.version, 'beta') }}
           tag_name: ${{ steps.metadata.outputs.version }}
-          name: "${{ steps.setup.outputs.pluginName }} ${{ steps.metadata.outputs.version }}"
+          name: "${{ steps.metadata.outputs.pluginName }} ${{ steps.metadata.outputs.version }}"
           body_path: ${{ github.workspace }}/CHECKSUMS.txt
           files: |
             ${{ github.workspace }}/**/*.zip
