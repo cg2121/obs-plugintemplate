@@ -358,8 +358,8 @@ jobs:
         shell: bash
     steps:
       - name: Get Metadata
+        working-directory: ${{ github.workspace }}/plugin
         id: metadata
-        workingDirectory: ${{ github.workspace }}/plugin
         run: |
           ## METADATA SCRIPT
           echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
