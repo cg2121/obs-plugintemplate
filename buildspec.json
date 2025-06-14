@@ -34,6 +34,9 @@
     "platformConfig": {
         "macos": {
             "bundleId": "com.example.plugintemplate-for-obs"
+        },
+        "windows": {
+            "appUUID": "A0A42C7F-E8EC-41F4-8B59-51707A9746C2"
         }
     },
     "name": "plugintemplate-for-obs",
