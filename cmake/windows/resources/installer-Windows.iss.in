@@ -31,3 +31,37 @@ Source: "..\release\Package\*"; DestDir: "{app}"; Flags: ignoreversion recursesu
 
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
+
+[Code]
+// Helper script to find the OBS installation path
+// credit where it's due :
+// following function comes from https://github.com/Xaymar/obs-studio_amf-encoder-plugin/blob/master/%23Resources/Installer.in.iss#L45
+// This is deprecated as it is not super reliable if portable installs are used. Replace with a more reliable method in the future.
+function GetOBSDirName(Value: String): String;
+var
+  InstallPath: String;
+begin
+  // initialize default path, which will be returned when the following registry
+  // key queries fail due to missing keys or for some different reason
+  Result := '{autopf}\obs-studio';
+  // query the first registry value; if this succeeds, return the obtained value
+  if RegQueryStringValue(HKLM32, 'SOFTWARE\OBS Studio', '', InstallPath) then
+    Result := InstallPath;
+end;
+
+// Pre-Post-Install actions
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  ResultCode: Integer;
+begin
+  ResultCode := 0;
+
+  // Post-install Steps
+  if ( CurStep = ssPostInstall ) then
+  begin
+    if ( DelTree(ExpandConstant('{code:GetOBSDirName}\data\obs-plugins\{#MyAppName}'), True, True, True) ) then
+      Log('Removed old {#MyAppName} plugin folder: ' + ExpandConstant('{code:GetOBSDirName}\data\obs-plugins\{#MyAppName}'));
+    if ( DelTree(ExpandConstant('{code:GetOBSDirName}\obs-plugins\64bit\{#MyAppName}*'), False, True, True) ) then
+      Log('Removed old {#MyAppName} plugin files: ' + ExpandConstant('{code:GetOBSDirName}\obs-plugins\64bit\{#MyAppName}*'));
+  end;
+end;
